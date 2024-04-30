@@ -6,7 +6,7 @@ const dotenv= require('dotenv')
 
 
 dotenv.config();
-mongoose.connect("mongodb+srv://onodaifetareborgift1:amenze@cluster0.elu2zci.mongodb.net/BLOG?retryWrites=true&w=majority&appName=Cluster0")
+mongoose.connect(process.env.MONGO)
 .then((conn)=>{console.log('database connected successfully')})
 .catch((err)=>{
     console.log(err)
