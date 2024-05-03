@@ -19,7 +19,6 @@ mongoose.connect(process.env.MONGO)
 app.use(cors())
 app.use(express.json())
 
-app.use('/api',userRoute)
 app.use('/api',signupRoute)
 app.use('/api',googleRoute)
 
