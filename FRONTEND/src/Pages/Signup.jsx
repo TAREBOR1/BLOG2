@@ -3,20 +3,17 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Alert, Button,  Label, Spinner, TextInput } from "flowbite-react";
 import { ImGoogle3 } from "react-icons/im";
-import { signInFailure,signInStart,signInSuccess } from '../redux/User/userSlice';
-import {useDispatch,useSelector} from 'react-redux'
 import OAUTH from '../Component/OAUTH';
 
-const Signin = () => {
+const Signup = () => {
   const [formData, setFormdata] = useState({
+    username:"",
     email:"",
     password:"",
   });
 
-
-  const {isloading,errorMessage,currentUser}=useSelector((state)=>state.user)
-
-  const dispatch=useDispatch()
+  const[errorMessage,SetErrormessage]=useState(null)
+  const[isloading,setIsLoading]=useState(false)
   const navigate= useNavigate();
 
   const handleChange = (e) => {
@@ -25,14 +22,15 @@ const Signin = () => {
       [e.target.name]: e.target.value.trim()
     }));
   };
-  const signin = async (e) => {
+  const signup = async (e) => {
     e.preventDefault();
-    if( !formData.password || !formData.email){
-     return dispatch(signInFailure('Please fill out all required field'))
+    if(!formData.username|| !formData.password || !formData.email){
+     return SetErrormessage('Please fill out all required field')
     }
     try {
-      dispatch(signInStart())
-      const response = await fetch('/api/signin', {
+      setIsLoading(true)
+      SetErrormessage(null)
+      const response = await fetch('/api/signup', {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -42,15 +40,16 @@ const Signin = () => {
       });
       const responseData = await response.json();
       if(responseData.success===false){
-        dispatch(signInFailure(responseData.message))
+        return SetErrormessage(responseData.message)
       }
+      setIsLoading(false)
       if(response.ok){
-        dispatch(signInSuccess(responseData))
-        navigate('/')
+        navigate('/Signin')
         // window.location.href='https://facebook.com'
       }
     } catch (error) {
-      dispatch(signInFailure(error.message))
+      SetErrormessage(error.message)
+     setIsLoading(false)
     }
  
   }
@@ -64,11 +63,17 @@ const Signin = () => {
           </Link>
           <p className='text-sm mt-2'>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur, quod quis quam, quae nobis culpa quisquam nesciunt ex excepturi rem repellat perferendis molestias minus atque ducimus suscipit eveniet sed iste!
-            You can sign in with your email or Google.
+            You can sign up with your email or Google.
           </p>
         </div>
         <div className='right flex-1'>
-          <form className="flex max-w-md flex-col gap-2" onSubmit={signin}>
+          <form className="flex max-w-md flex-col gap-2" onSubmit={signup}>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="username">Username</Label>
+              </div>
+              <TextInput type="text" id="username" name="username" value={formData.username} onChange={handleChange} placeholder="Your username"  />
+            </div>
             <div>
               <div className="mb-2 block">
                 <Label htmlFor="email">Email</Label>
@@ -87,15 +92,15 @@ const Signin = () => {
              <Spinner size='sm'/>
              <span className='pl-3'>Loading...</span>
              </>
-             : 'Sign In'
+             : 'Sign Up'
             }
             </Button>
             <OAUTH/>
           </form>
         
           <div className='lex gap-5 text-sm mt-5'>
-            <span>Don't have an account?</span>
-            <Link className='text-blue-500' to='/signup'>Sign up</Link>
+            <span>Have an account?</span>
+            <Link className='text-blue-500' to='/signin'>Sign in</Link>
           </div>
           {errorMessage && <Alert className='mt-4' color='failure'>{errorMessage}</Alert>}
         </div>
@@ -104,6 +109,6 @@ const Signin = () => {
   );
 };
 
-export default Signin;
+export default Signup;
 
 

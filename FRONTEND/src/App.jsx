@@ -1,26 +1,33 @@
 import React from 'react'
-import { BrowserRouter, Routes,Route } from 'react-router-dom'
+import { BrowserRouter, Route,Routes } from 'react-router-dom'
 import About from './Pages/About'
-import Home from './Pages/Home'
 import Dashboard from './Pages/Dashboard'
-import Project from './Pages/Project'
-import Signin from './Pages/Signin'
-import Signout from './Pages/Signout'
+import Home from './pages/Home'
+import Project from './pages/Project'
 import Header from './Component/Header'
+import Signin from './Pages/Signin'
+import Signup from './Pages/Signup'
+import FooterC from './Component/FooterC'
+import PrivateRoute from './Component/PrivateRoute'
+
+
 
 const App = () => {
   return (
-  <BrowserRouter>
-   <Header/>
-  <Routes>
-    <Route path='/' element={<Home/>}/>
-    <Route path='/about' element={<About/>}/>
-    <Route path='/dashboard' element={<Dashboard/>}/>
-    <Route path='/project' element={<Project/>}/>
-    <Route path='/signin' element={<Signin/>}/>
-    <Route path='/signout' element={<Signout/>}/>
-  </Routes>
-  </BrowserRouter>
+<BrowserRouter>
+<Header/>
+<Routes>
+  <Route path="/About" element={<About/>} />
+  <Route element={<PrivateRoute/>}>
+  <Route path='/Dashboard' element={<Dashboard/>}/>
+  </Route>
+  <Route path='/' element={<Home/>}/>
+  <Route path='/Projects' element={<Project/>}/>
+  <Route path='/Signin' element={<Signin/>}/>
+  <Route path='/Signup' element={<Signup/>}/>
+</Routes>
+<FooterC/>
+</BrowserRouter>
   )
 }
 
