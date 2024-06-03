@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Alert, Button,  Label, Spinner, TextInput } from "flowbite-react";
 import { ImGoogle3 } from "react-icons/im";
-import { signInFailure,signInStart,signInSuccess } from '../redux/User/userSlice';
+import { signInFailure,signInStart,signInSuccess } from '../Redux/user/userSlice';
 import {useDispatch,useSelector} from 'react-redux'
 import OAUTH from '../Component/OAUTH';
 

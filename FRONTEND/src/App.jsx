@@ -2,13 +2,13 @@ import React from 'react'
 import { BrowserRouter, Route,Routes } from 'react-router-dom'
 import About from './Pages/About'
 import Dashboard from './Pages/Dashboard'
-import Home from './pages/Home'
-import Project from './pages/Project'
+import Home from './Pages/Home'
+import Project from './Pages/Project'
 import Header from './Component/Header'
 import Signin from './Pages/Signin'
 import Signup from './Pages/Signup'
 import FooterC from './Component/FooterC'
-import PrivateRoute from './Component/PrivateRoute'
+// import PrivateRoute from './Component/PrivateRoute'
 
 
 
@@ -18,9 +18,9 @@ const App = () => {
 <Header/>
 <Routes>
   <Route path="/About" element={<About/>} />
-  <Route element={<PrivateRoute/>}>
+
   <Route path='/Dashboard' element={<Dashboard/>}/>
-  </Route>
+  
   <Route path='/' element={<Home/>}/>
   <Route path='/Projects' element={<Project/>}/>
   <Route path='/Signin' element={<Signin/>}/>
