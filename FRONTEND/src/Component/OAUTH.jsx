@@ -8,36 +8,38 @@ import {useDispatch,} from 'react-redux'
 import {useNavigate} from 'react-router-dom'
 
 const OAUTH = () => {
+  const auth = getAuth(app)
     const dispatch=useDispatch()
     const navigate= useNavigate()
     const handleGoogle= async()=>{
-        const auth = getAuth(app)
       const provider = new GoogleAuthProvider()
       provider.setCustomParameters({prompt:'select_account'})
-      const resultFromGoogle = await signInWithPopup(auth,provider) 
-      console.log(resultFromGoogle) 
       try {
-
-       const response = await fetch('/api/google',{
-        method:'POST',
-        headers:{
-            'Content-Type':'application/json'
-        },
-        body:JSON.stringify({
-            username:resultFromGoogle.user.displayName,
-            email:resultFromGoogle.user.email,
-            photoUrl:resultFromGoogle.user.photoURL
-        })
-       })
-       const responseData = await response.json();
-       if(response.ok){
-        dispatch(signInSuccess(responseData))
-        navigate('/')
-       }
+        const resultFromGoogle = await signInWithPopup(auth,provider) 
+     
+        const response = await fetch('/api/google',{
+          method:'POST',
+          headers:{
+              'Content-Type':'application/json'
+          },
+          body:JSON.stringify({
+              username:resultFromGoogle.user.displayName,
+              email:resultFromGoogle.user.email,
+              photoUrl:resultFromGoogle.user.photoURL
+          })
+         })
+         const responseData = await response.json();
+         if(response.ok){
+          dispatch(signInSuccess(responseData))
+          navigate('/')
+         }
       } catch (error) {
-        console.log(error)
+        console.log(error)                   
       }
-    }
+  
+
+   
+      }
   return (
   <Button type='button' gradientDuoTone='pinkToOrange' outline onClick={handleGoogle}>
     <AiFillGoogleCircle className='w-6 h-6 mr-2'/>
