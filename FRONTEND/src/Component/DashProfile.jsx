@@ -13,7 +13,6 @@ const DashProfile = () => {
     const [imageUrl,setImageUrl]=useState('')
     const [imageUploadProgess,setImageUploadProgress]=useState(null)
     const [imageUploadError,setImageUploadError]=useState(null)
-    console.log(imageUploadError,imageUploadProgess)
     const filepicker= useRef()
     const handleIMGchange=(e)=>{
      const file=e.target.files[0]
@@ -56,9 +55,9 @@ const DashProfile = () => {
         },
         (error) => {
            setImageUploadError('could not upload image(file must be less than 2mb)');
-           setImageUploadError(null)
-        
+         setImageUploadProgress(null)
            setImageUrl(null)
+           setImage(null)
         },
         ()=>{
             getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl)=>{
@@ -66,20 +65,30 @@ const DashProfile = () => {
             })
         }
     )
-        console.log('uploadig....')
     }
  
-
-  
-  
   return (
     <div className='max-w-lg mx-auto p-3 w-full'>
         <h1 className='my-7 text-center font-semibold text-3xl '>profile</h1>
 <form className='flex flex-col gap-4'>
 <input type="file" accept='image/*'  onChange={handleIMGchange} ref={filepicker} hidden />
-     <div className='w-32 h-32 self-center cursor-pointer shadow-md overflow-hidden rounded-full' onClick={()=>filepicker.current.click()}>
-    
-        <img src={imageUrl || currentUser.profilePicture} alt="user" className='border-8 border-[lightgray] rounded-full object-cover w-full h-full' />
+     <div className='relative w-32 h-32 self-center cursor-pointer shadow-md overflow-hidden rounded-full' onClick={()=>filepicker.current.click()}>
+        {imageUploadProgess && <CircularProgressbar value={imageUploadProgess || 0} text={`${imageUploadProgess}%`}
+         strokeWidth={5}
+         styles={{
+            root:{
+                width:'100%',
+                height:"100%",
+                position:"absolute",
+                top:0,
+                left:0
+            },
+            path:{
+                stroke: `rgba(62,152,199,${imageUploadProgess/100})`
+            }
+         }}
+        />}
+        <img src={imageUrl || currentUser.profilePicture} alt="user" className={ `border-8 border-[lightgray] rounded-full object-cover w-full h-full ${imageUploadProgess && imageUploadProgess<100 && 'opacity-60'} `}/>
         </div> 
         {imageUploadError &&    <Alert color='failure'>{imageUploadError}</Alert> }
      
