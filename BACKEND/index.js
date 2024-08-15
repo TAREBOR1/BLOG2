@@ -5,6 +5,8 @@ const cors=require('cors')
 const dotenv=require('dotenv')
 const signupRoute=require('./routes/auth.route')
 const googleRoute= require('./routes/auth.route')
+const userRoute=require('./routes/user.route')
+const cookieParser=require('cookie-parser')
 
 dotenv.config();
 
@@ -18,9 +20,11 @@ mongoose.connect(process.env.MONGO)
 })
 app.use(cors())
 app.use(express.json())
+app.use(cookieParser())
 
 app.use('/api',signupRoute)
 app.use('/api',googleRoute)
+app.use('/api',userRoute)
 
 app.use((error,req,res,next)=>{
      const statuscode = error.statuscode || 500;
