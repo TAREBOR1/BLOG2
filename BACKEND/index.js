@@ -13,7 +13,11 @@ dotenv.config();
 const app=express();
 
 
-mongoose.connect(process.env.MONGO)
+mongoose.connect(process.env.MONGO,  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 30000 // Increase to 30 seconds
+  })
 .then((conn)=>{console.log('database connected successfully')})
 .catch((err)=>{
     console.log(err)

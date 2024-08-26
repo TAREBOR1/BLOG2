@@ -3,7 +3,7 @@ const bcryptjs=require('bcryptjs');
 const USER=require("../models/user.model")
 
 exports.Update=async(req,res,next)=>{
-    if(req.user!=req.params.user){
+    if(req.user != req.params.user){
         return next(errorhandler(403,'you are not authorised to update this user'))
     }
    if(req.body.password){

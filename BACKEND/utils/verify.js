@@ -1,7 +1,7 @@
 const jwt=require('jsonwebtoken')
 const {errorhandler} =require('./error')
 
-exports.verifyToken=async(req,res,next)=>{
+exports.verifyToken= (req,res,next)=>{
     const token= req.cookies.access_token
     if(!token){
         return next(errorhandler(401,'unauthorized'))
